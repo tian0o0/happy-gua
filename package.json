@@ -1,0 +1,26 @@
+{
+  "name": "happy-gua",
+  "version": "0.0.1",
+  "description": "a canvas library for your project",
+  "main": "main.ts",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "test": "node test/test.js",
+    "pretest": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tian0o0/happy-gua.git"
+  },
+  "author": "tian0o0",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tian0o0/happy-gua/issues"
+  },
+  "homepage": "https://github.com/tian0o0/happy-gua#readme",
+  "devDependencies": {
+    "rollup-plugin-typescript2": "^0.19.2",
+    "typescript": "^3.2.4"
+  }
+}
