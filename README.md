@@ -1,15 +1,12 @@
 # HappyGua
 - HappyGua是一个基于canvas的刮刮乐工具
 - 提供 esm/cjs/umd
-
 ## Install
 ```sh
 npm install happy-gua
 ```
-
 ## Usage
-
-**1.定义一个具有一个父子节点的dom结构, HappyGua会在在该结构上进行初始化**
+**1.定义一个具有父子节点的dom结构, HappyGua会在该结构上进行初始化**
 ```html
 <div id="guaguale">
   <div class="inner">谢谢惠顾</div>
