@@ -1,8 +1,10 @@
 {
   "name": "happy-gua",
-  "version": "0.0.4",
-  "description": "a canvas library for your pages",
-  "main": "dist/index.esm",
+  "version": "0.0.5",
+  "description": "A tool of scratch card based on canvas",
+  "main": "dist/happy-gua.cjs.js",
+  "module": "dist/happy-gua.esm.js",
+  "broswer": "dist/happy-gua.umd.js",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",

@@ -5,7 +5,7 @@ interface Options {
     coverText?: string;
     coverPic?: string;
     ratio?: number;
-    callback?: Function;
+    complete?: Function;
 }
 export default class HappyGua {
     canvas: any;
@@ -14,18 +14,19 @@ export default class HappyGua {
     innerEle: any;
     canvasW: number;
     canvasH: number;
-    supportTouch: boolean;
+    isMobile: boolean;
     events: any[];
     startEventHandler: Function;
     moveEventHandler: Function;
     endEventHandler: Function;
     defaultOptions: Options;
+    options: Options;
     constructor(options: Options);
-    init(options: any): void;
-    createCanvas(): void;
-    eventDetect(): void;
-    listenStart(): void;
-    clearAll(): void;
-    calcRatio(callback: any): void;
+    beforeInit(): this;
+    init(): this;
+    eventDetect(): this;
+    onStart(): void;
+    clear(): void;
+    calc(callback: Function): void;
 }
 export {};

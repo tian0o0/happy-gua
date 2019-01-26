@@ -5,7 +5,7 @@ interface Options {
     coverText?: string;
     coverPic?: string;
     ratio?: number;
-    callback?: Function;
+    complete?: Function;
 }
 export default class HappyGua {
     canvas: any;
@@ -14,12 +14,13 @@ export default class HappyGua {
     innerEle: any;
     canvasW: number;
     canvasH: number;
-    supportTouch: boolean;
+    isMobile: boolean;
     events: any[];
     startEventHandler: Function;
     moveEventHandler: Function;
     endEventHandler: Function;
     defaultOptions: Options;
+    options: Options;
     constructor(options: Options) {
         this.canvas = null;
         this.ctx = null;
@@ -27,7 +28,7 @@ export default class HappyGua {
         this.innerEle = null;
         this.canvasW = 0;
         this.canvasH = 0;
-        this.supportTouch = false;
+        this.isMobile = false;
         this.events = [];
         this.startEventHandler = null;
         this.moveEventHandler = null;
@@ -35,107 +36,84 @@ export default class HappyGua {
         this.defaultOptions = {
             radius: 10,
             coverColor: '#CCCCCC',
-            coverText: '',
-            coverPic: '',
             ratio: .8
         };
-        // const mergeOptions = Object.assign({}, this.defaultOptions, options);
-
-        this.init(options);
+        this.options = Object.assign({}, this.defaultOptions, options);
+        this.beforeInit().init().eventDetect().onStart();
     }
 
-    init(options) {
+    beforeInit() {
         if(!isCanvasSupported()){
-            throw new Error('the broswer you using is not support canvas');
-            return;
+            throw new Error('The broswer you are using is not support canvas');
         }
-        _forEach(arguments, item => {
-            if (typeof item === "object") {
-                for (var k in item) {
-                    if (k === 'callback' && typeof item[k] === 'function') {
-                        this.defaultOptions.callback = item[k].bind(this);
-                    } else {
-                        k in this.defaultOptions && (this.defaultOptions[k] = item[k]);
-                    }
-                }
-            } else if (typeof item === "function") {
-                this.defaultOptions.callback = item.bind(this);
-            }
-        });
-        this.wrapEle = document.querySelector(options.ele);
+        this.wrapEle = document.querySelector(this.options.ele);
         this.innerEle = this.wrapEle.children[0];
         if (!this.wrapEle || !this.innerEle) {
-            throw new Error('your dom structure seems wrong, please check it')
+            throw new Error('Your dom structure seems wrong, please check it')
         };
+        return this;
+    }
+
+    init() {
         this.canvasH = this.wrapEle.clientHeight;
         this.canvasW = this.wrapEle.clientWidth;
         this.innerEle.style.opacity = 0;
-        this.createCanvas();
-        this.eventDetect();
-    }
-
-    createCanvas() {
+        
         this.canvas = document.createElement('canvas');
         this.canvas.id = 'cover';
         this.canvas.height = this.canvasH;
         this.canvas.width = this.canvasW;
         this.canvas.style.position = 'absolute';
         this.canvas.style.top = 0;
+        this.canvas.style.left = 0;
         this.ctx = this.canvas.getContext('2d');
-        if (this.defaultOptions.coverPic) {
+        if (this.options.coverPic) {
             let coverPic = new Image();
-            coverPic.src = this.defaultOptions.coverPic;
-            coverPic.onload = () => { this.ctx.drawImage(coverPic, 0, 0, this.canvas.width, this.canvas.height); }
+            coverPic.src = this.options.coverPic;
+            coverPic.crossOrigin = 'anonymous';
+            coverPic.onload = () => { this.ctx.drawImage(coverPic, 0, 0, this.canvasW, this.canvasH); }
         } else {
-            this.ctx.fillStyle = this.defaultOptions.coverColor;
-            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+            this.ctx.fillStyle = this.options.coverColor;
+            this.ctx.fillRect(0, 0, this.canvasW, this.canvasH);
         }
         this.wrapEle.appendChild(this.canvas);
         this.innerEle.style.opacity = 1;
+        return this;
     }
 
     eventDetect() {
-        if('ontouchstart' in window) this.supportTouch = true;
-        this.events = this.supportTouch ? ['touchstart', 'touchmove', 'touchend'] : ['mousedown', 'mousemove', 'mouseup'];
-        this.listenStart();
+        if('ontouchstart' in window) this.isMobile = true;
+        this.events = this.isMobile ? ['touchstart', 'touchmove', 'touchend'] : ['mousedown', 'mousemove', 'mouseup'];
+        return this;
     }
 
-    listenStart() {
+    onStart() {
         this.startEventHandler = _startHandler.bind(this);
         this.canvas.addEventListener(this.events[0], this.startEventHandler, false);
     }
 
-    clearAll() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    clear() {
+        this.ctx.clearRect(0, 0, this.canvasW, this.canvasH);
         this.canvas.removeEventListener(this.events[0], this.startEventHandler);
         this.canvas.removeEventListener(this.events[1], this.moveEventHandler);
         this.canvas.removeEventListener(this.events[2], this.endEventHandler);
     };
 
-    calcRatio(callback) {
+    calc(callback: Function) {
         var pixels = this.ctx.getImageData(0, 0, this.canvasW, this.canvasH);
         var transPixels = [];
-        _forEach(pixels.data, function(item, i) {
-            var pixel = pixels.data[i + 3];
-            if (pixel === 0) {
+        pixels.data.forEach((item: [], i: number) => {
+            let pixel = pixels.data[i + 3];
+            if(pixel === 0) {
                 transPixels.push(pixel);
             }
-        });
+        })
 
-        if (transPixels.length / pixels.data.length > this.defaultOptions.ratio) {
-            callback && typeof callback === 'function' && callback();
+        if (transPixels.length / pixels.data.length > this.options.ratio) {
+            callback && typeof callback === 'function' && callback.call(this);
         }
     }
 }
-
-
-    
-
-    function _forEach(items, callback) {
-        return Array.prototype.forEach.call(items, function(item, idx) {
-            callback(item, idx);
-        });
-    }
 
     function isCanvasSupported(){
       let ele = document.createElement('canvas');
@@ -152,7 +130,7 @@ export default class HappyGua {
 
     function _moveHandler(e) {
         e.preventDefault();
-        var evt = this.supportTouch ? e.touches[0] : e;
+        var evt = this.isMobile ? e.touches[0] : e;
         var coverPos = this.canvas.getBoundingClientRect();
         var pageScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
         var pageScrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft;
@@ -162,13 +140,13 @@ export default class HappyGua {
         this.ctx.beginPath();
         this.ctx.fillStyle = '#FFFFFF';
         this.ctx.globalCompositeOperation = "destination-out";
-        this.ctx.arc(mouseX, mouseY, this.defaultOptions.radius * 2, 0, 2 * Math.PI);
+        this.ctx.arc(mouseX, mouseY, this.options.radius * 2, 0, 2 * Math.PI);
         this.ctx.fill();
     };
 
     function _endHandler(e) {
         e.preventDefault();
-        if (this.defaultOptions.callback && typeof this.defaultOptions.callback === 'function') this.calcRatio(this.defaultOptions.callback)
+        if (this.options.complete && typeof this.options.complete === 'function') this.calc(this.options.complete)
         this.canvas.removeEventListener(this.events[1],this.moveEventHandler,false);
         document.removeEventListener(this.events[2],this.endEventHandler,false);
     };
