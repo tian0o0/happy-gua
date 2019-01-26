@@ -1,8 +1,8 @@
 {
   "name": "happy-gua",
-  "version": "0.0.1",
-  "description": "a canvas library for your project",
-  "main": "main.ts",
+  "version": "0.0.4",
+  "description": "a canvas library for your pages",
+  "main": "dist/index.esm",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
@@ -21,6 +21,8 @@
   "homepage": "https://github.com/tian0o0/happy-gua#readme",
   "devDependencies": {
     "rollup-plugin-typescript2": "^0.19.2",
+    "rollup-plugin-uglify-es": "0.0.1",
     "typescript": "^3.2.4"
-  }
+  },
+  "dependencies": {}
 }
