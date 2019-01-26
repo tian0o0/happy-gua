@@ -26,7 +26,7 @@ new HappyGua({
   coverColor: '#f6f6f6', //涂层颜色，默认#cccccc，可选
   coverPic: './cover-pic.png', //涂层图片，默认无，设置后将coverColor将失效，可选
   callback: function() { //可选 
-    this.clearAll(); //调用该方法将清除涂层
+    this.clear(); //调用该方法将清除涂层
   }
 })
 ```
