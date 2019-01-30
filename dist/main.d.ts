@@ -10,7 +10,6 @@ interface Options {
 export default class HappyGua {
     canvas: any;
     ctx: any;
-    wrapEle: any;
     innerEle: any;
     canvasW: number;
     canvasH: number;

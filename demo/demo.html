@@ -6,35 +6,41 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>happy-gua</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
         #wrap{ 
             position: relative; 
-            width: 300px; 
-            height: 100px;
+            width: 100vw; 
+            height: 30vh;
         }
-        .inner{
+        #inner{
             display: flex;
             align-items: center;
             justify-content: center;
-            user-select:none; 
-            height: 100%;
+            user-select:none;
+            width: 100vw; 
+            height: 30vh;
+            /* height: 100%; */
         }
     </style>
 </head>
 <body>
-    <div id="wrap">
-        <div class="inner">谢谢惠顾</div>
-    </div>
+    <!-- <div id="wrap"> -->
+        <div id="inner">谢谢惠顾</div>
+    <!-- </div> -->
     <script src="../dist/happy-gua.umd.js"></script>
     <script>
         new HappyGua({
-      ele: '#wrap',
-      radius: 5,
-      ratio: 0.5,
-      coverPic: './diamond-bg.png',
-      complete: function() {
-          this.clear();
-      }
-    })
+            ele: '#inner',
+            radius: 20,
+            ratio: 0.5,
+            // coverPic: './diamond-bg.png',
+            complete: function() {
+                this.clear();
+            }
+        })
     </script>
 </body>
 </html>

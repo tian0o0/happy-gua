@@ -10,7 +10,7 @@ interface Options {
 export default class HappyGua {
     canvas: any;
     ctx: any;
-    wrapEle: any;
+    // wrapEle: any;
     innerEle: any;
     canvasW: number;
     canvasH: number;
@@ -24,7 +24,7 @@ export default class HappyGua {
     constructor(options: Options) {
         this.canvas = null;
         this.ctx = null;
-        this.wrapEle = null;
+        // this.wrapEle = null;
         this.innerEle = null;
         this.canvasW = 0;
         this.canvasH = 0;
@@ -46,21 +46,24 @@ export default class HappyGua {
         if(!isCanvasSupported()){
             throw new Error('The broswer you are using is not support canvas');
         }
-        this.wrapEle = document.querySelector(this.options.ele);
-        this.innerEle = this.wrapEle.children[0];
-        if (!this.wrapEle || !this.innerEle) {
-            throw new Error('Your dom structure seems wrong, please check it')
+        this.innerEle = document.querySelector(this.options.ele);
+        if (!this.innerEle ) {
+            throw new Error('Can not find element: ' + this.options.ele);
         };
         return this;
     }
 
     init() {
-        this.canvasH = this.wrapEle.clientHeight;
-        this.canvasW = this.wrapEle.clientWidth;
-        this.innerEle.style.opacity = 0;
+        
+        this.canvasH = this.innerEle.clientHeight;
+        this.canvasW = this.innerEle.clientWidth;
+        
+        const wrapEle = document.createElement('div')
+        wrapEle.style.position = 'relative';
+        wrapEle.style.height = this.innerEle.clientHeight;
+        wrapEle.style.width = this.innerEle.clientWidth;
         
         this.canvas = document.createElement('canvas');
-        this.canvas.id = 'cover';
         this.canvas.height = this.canvasH;
         this.canvas.width = this.canvasW;
         this.canvas.style.position = 'absolute';
@@ -76,8 +79,9 @@ export default class HappyGua {
             this.ctx.fillStyle = this.options.coverColor;
             this.ctx.fillRect(0, 0, this.canvasW, this.canvasH);
         }
-        this.wrapEle.appendChild(this.canvas);
-        this.innerEle.style.opacity = 1;
+        wrapEle.appendChild(this.innerEle)
+        wrapEle.insertBefore(this.canvas, this.innerEle)
+        document.body.appendChild(wrapEle)
         return this;
     }
 
@@ -115,41 +119,37 @@ export default class HappyGua {
     }
 }
 
-    function isCanvasSupported(){
-      let ele = document.createElement('canvas');
-      return !!(ele.getContext && ele.getContext('2d'));
-    }
-
-    function _startHandler(e) {
-        e.preventDefault();
-        this.moveEventHandler = _moveHandler.bind(this);
-        this.canvas.addEventListener(this.events[1], this.moveEventHandler, false);
-        this.endEventHandler = _endHandler.bind(this);
-        document.addEventListener(this.events[2], this.endEventHandler, false);
-    };
-
-    function _moveHandler(e) {
-        e.preventDefault();
-        var evt = this.isMobile ? e.touches[0] : e;
-        var coverPos = this.canvas.getBoundingClientRect();
-        var pageScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-        var pageScrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft;
-        var mouseX = evt.pageX - coverPos.left - pageScrollLeft;
-        var mouseY = evt.pageY - coverPos.top - pageScrollTop;
-
-        this.ctx.beginPath();
-        this.ctx.fillStyle = '#FFFFFF';
-        this.ctx.globalCompositeOperation = "destination-out";
-        this.ctx.arc(mouseX, mouseY, this.options.radius * 2, 0, 2 * Math.PI);
-        this.ctx.fill();
-    };
-
-    function _endHandler(e) {
-        e.preventDefault();
-        if (this.options.complete && typeof this.options.complete === 'function') this.calc(this.options.complete)
-        this.canvas.removeEventListener(this.events[1],this.moveEventHandler,false);
-        document.removeEventListener(this.events[2],this.endEventHandler,false);
-    };
+function isCanvasSupported(){
+    let ele = document.createElement('canvas');
+    return !!(ele.getContext && ele.getContext('2d'));
+}
+function _startHandler(e) {
+    e.preventDefault();
+    this.moveEventHandler = _moveHandler.bind(this);
+    this.canvas.addEventListener(this.events[1], this.moveEventHandler, false);
+    this.endEventHandler = _endHandler.bind(this);
+    document.addEventListener(this.events[2], this.endEventHandler, false);
+};
+function _moveHandler(e) {
+    e.preventDefault();
+    var evt = this.isMobile ? e.touches[0] : e;
+    var coverPos = this.canvas.getBoundingClientRect();
+    var pageScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    var pageScrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft;
+    var mouseX = evt.pageX - coverPos.left - pageScrollLeft;
+    var mouseY = evt.pageY - coverPos.top - pageScrollTop;
+    this.ctx.beginPath();
+    this.ctx.fillStyle = '#fff';
+    this.ctx.globalCompositeOperation = "destination-out";
+    this.ctx.arc(mouseX, mouseY, this.options.radius * 2, 0, 2 * Math.PI);
+    this.ctx.fill();
+};
+function _endHandler(e) {
+    e.preventDefault();
+    if (this.options.complete && typeof this.options.complete === 'function') this.calc(this.options.complete)
+    this.canvas.removeEventListener(this.events[1],this.moveEventHandler,false);
+    document.removeEventListener(this.events[2],this.endEventHandler,false);
+};
 
 
     
