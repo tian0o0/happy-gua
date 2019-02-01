@@ -11,7 +11,7 @@ yarn add happy-gua
 ## Usage
 **1.定义一个DOM节点, HappyGua会在该结构上进行初始化**
 ```html
-  <div class="gua">谢谢惠顾</div>
+<div id="gua">谢谢惠顾</div>
 ```
 **2.初始化**
 ```js

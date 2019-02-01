@@ -10,30 +10,22 @@
             margin: 0;
             padding: 0;
         }
-        #wrap{ 
-            position: relative; 
-            width: 100vw; 
-            height: 30vh;
-        }
-        #inner{
+        #gua{
             display: flex;
             align-items: center;
             justify-content: center;
             user-select:none;
             width: 100vw; 
             height: 30vh;
-            /* height: 100%; */
         }
     </style>
 </head>
 <body>
-    <!-- <div id="wrap"> -->
-        <div id="inner">谢谢惠顾</div>
-    <!-- </div> -->
+    <div id="gua">谢谢惠顾</div>
     <script src="../dist/happy-gua.umd.js"></script>
     <script>
         new HappyGua({
-            ele: '#inner',
+            ele: '#gua',
             radius: 20,
             ratio: 0.5,
             // coverPic: './diamond-bg.png',
