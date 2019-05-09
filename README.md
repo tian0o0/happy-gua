@@ -33,7 +33,7 @@ new HappyGua({
 ```sh
 git clone git@github.com:tian0o0/happy-gua.git
 ```
-2. Start rollup dev environment, so watch the file's change and build at real time
+2. Start rollup dev environment to watch the file's change and build at real time
 ```sh
 npm run dev
 ```
