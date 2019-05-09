@@ -5,12 +5,12 @@ interface Options {
     coverText?: string;
     coverPic?: string;
     ratio?: number;
+    start?: Function;
     complete?: Function;
 }
 export default class HappyGua {
     canvas: any;
     ctx: any;
-    // wrapEle: any;
     innerEle: any;
     canvasW: number;
     canvasH: number;
@@ -21,10 +21,11 @@ export default class HappyGua {
     endEventHandler: Function;
     defaultOptions: Options;
     options: Options;
+    isStart: boolean;
     constructor(options: Options) {
+        this.isStart = false;
         this.canvas = null;
         this.ctx = null;
-        // this.wrapEle = null;
         this.innerEle = null;
         this.canvasW = 0;
         this.canvasH = 0;
@@ -57,8 +58,9 @@ export default class HappyGua {
         
         this.canvasH = this.innerEle.clientHeight;
         this.canvasW = this.innerEle.clientWidth;
-        
-        const wrapEle = document.createElement('div')
+        const wrapEle = document.createElement('div');
+        wrapEle.appendChild(this.innerEle);
+        // const wrapEle = this.innerEle.parentNode
         wrapEle.style.position = 'relative';
         wrapEle.style.height = this.innerEle.clientHeight;
         wrapEle.style.width = this.innerEle.clientWidth;
@@ -125,6 +127,10 @@ function isCanvasSupported(){
 }
 function _startHandler(e) {
     e.preventDefault();
+    if (this.options.start && typeof this.options.start === 'function') {
+        !this.isStart && this.options.start.call(this)
+        this.isStart = true
+    }
     this.moveEventHandler = _moveHandler.bind(this);
     this.canvas.addEventListener(this.events[1], this.moveEventHandler, false);
     this.endEventHandler = _endHandler.bind(this);

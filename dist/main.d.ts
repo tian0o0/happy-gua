@@ -5,6 +5,7 @@ interface Options {
     coverText?: string;
     coverPic?: string;
     ratio?: number;
+    start?: Function;
     complete?: Function;
 }
 export default class HappyGua {
@@ -20,6 +21,7 @@ export default class HappyGua {
     endEventHandler: Function;
     defaultOptions: Options;
     options: Options;
+    isStart: boolean;
     constructor(options: Options);
     beforeInit(): this;
     init(): this;
