@@ -21,17 +21,19 @@
     </style>
 </head>
 <body>
+    <div id="wrap"></div>
     <div id="gua">谢谢</div>
     <script src="../dist/happy-gua.umd.js"></script>
     <script>
         new HappyGua({
+            mountEle: '#wrap',
             ele: '#gua',
             radius: 20,
             ratio: 0.5,
             start: function() {
                 console.log('start')
             },
-            coverPic: './diamond-bg.png',
+            // coverPic: './diamond-bg.png',
             complete: function() {
                 this.clear();
             }

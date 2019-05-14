@@ -1,4 +1,5 @@
 interface Options {
+    mountEle?: string;
     ele?: string;
     radius?: number;
     coverColor?: string;
@@ -11,6 +12,7 @@ interface Options {
 export default class HappyGua {
     canvas: any;
     ctx: any;
+    mountEle: any;
     innerEle: any;
     canvasW: number;
     canvasH: number;
@@ -26,6 +28,7 @@ export default class HappyGua {
         this.isStart = false;
         this.canvas = null;
         this.ctx = null;
+        this.mountEle = null;
         this.innerEle = null;
         this.canvasW = 0;
         this.canvasH = 0;
@@ -49,13 +52,13 @@ export default class HappyGua {
         }
         this.innerEle = document.querySelector(this.options.ele);
         if (!this.innerEle ) {
-            throw new Error('Can not find element: ' + this.options.ele);
+            throw new Error('Can not find element, "ele" field is required!');
         };
         return this;
     }
 
     init() {
-        
+        this.mountEle = this.options.mountEle ? document.querySelector(this.options.mountEle) : document.body;
         this.canvasH = this.innerEle.clientHeight;
         this.canvasW = this.innerEle.clientWidth;
         const wrapEle = document.createElement('div');
@@ -83,7 +86,7 @@ export default class HappyGua {
         }
         wrapEle.appendChild(this.innerEle)
         wrapEle.insertBefore(this.canvas, this.innerEle)
-        document.body.appendChild(wrapEle)
+        this.mountEle.appendChild(wrapEle);
         return this;
     }
 

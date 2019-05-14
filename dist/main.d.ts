@@ -1,4 +1,5 @@
 interface Options {
+    mountEle?: string;
     ele?: string;
     radius?: number;
     coverColor?: string;
@@ -11,6 +12,7 @@ interface Options {
 export default class HappyGua {
     canvas: any;
     ctx: any;
+    mountEle: any;
     innerEle: any;
     canvasW: number;
     canvasH: number;
