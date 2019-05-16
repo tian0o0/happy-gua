@@ -1,6 +1,6 @@
 {
   "name": "happy-gua",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A tool of scratch card based on canvas",
   "main": "dist/happy-gua.cjs.js",
   "module": "dist/happy-gua.esm.js",

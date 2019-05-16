@@ -65,8 +65,8 @@ export default class HappyGua {
         wrapEle.appendChild(this.innerEle);
         // const wrapEle = this.innerEle.parentNode
         wrapEle.style.position = 'relative';
-        wrapEle.style.height = this.innerEle.clientHeight;
-        wrapEle.style.width = this.innerEle.clientWidth;
+        wrapEle.style.height = this.canvasH + 'px';
+        wrapEle.style.width = this.canvasW + 'px';
         
         this.canvas = document.createElement('canvas');
         this.canvas.height = this.canvasH;
