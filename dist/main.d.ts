@@ -1,4 +1,4 @@
-interface Options {
+export interface Options {
     mountEle?: string;
     ele?: string;
     radius?: number;
@@ -32,4 +32,3 @@ export default class HappyGua {
     clear(): void;
     calc(callback: Function): void;
 }
-export {};

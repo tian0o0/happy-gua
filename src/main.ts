@@ -1,4 +1,4 @@
-interface Options {
+export interface Options {
     mountEle?: string;
     ele?: string;
     radius?: number;

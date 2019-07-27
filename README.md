@@ -1,7 +1,7 @@
 # HappyGua
 - HappyGua是一个简单好用的刮刮乐工具
 - 提供 esm/cjs/umd
-- typescript支持
+- TypeScript支持
 ## Install
 ```sh
 npm install happy-gua
@@ -11,14 +11,14 @@ yarn add happy-gua
 ## Usage
 **1.定义一个DOM节点, HappyGua会在该结构上进行初始化**
 ```html
-<div id="gua">谢谢惠顾</div>
+<div id="area">谢谢惠顾</div>
 ```
 **2.初始化**
 ```js
 import HappyGua from 'happy-gua'
 
 new HappyGua({
-  ele: '#gua', // 挂载元素，必须
+  ele: '#area', // 挂载元素，必须
   mountEle: '#wrap', // 挂载节点，默认挂载在body上，可选
   radius: 5, // 擦除半径，默认10px，可选
   ratio: 0.5, // 擦除面积，超过该数值将执行complete，默认0.8，可选
